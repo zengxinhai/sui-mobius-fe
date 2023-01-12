@@ -1,5 +1,5 @@
 import {Paper, Typography} from "@mui/material";
-import {CollateralList} from "./lists/CollateralList";
+import {CollateralList} from "./CollateralList";
 
 export const CollateralZone = () => {
   return (

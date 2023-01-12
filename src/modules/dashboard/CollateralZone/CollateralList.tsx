@@ -1,4 +1,4 @@
-import {Table, TableContainer, TableHead, TableRow, TableCell, TableBody, Box, Typography} from "@mui/material";
+import {Table, TableContainer, TableHead, TableRow, TableCell, TableBody, Box, Typography, Button} from "@mui/material";
 import {CoinIcon} from "../../../components/CoinIcon";
 
 export const CollateralList = () => {
@@ -10,6 +10,7 @@ export const CollateralList = () => {
             <TableCell>Coin</TableCell>
             <TableCell>Wallet Balance</TableCell>
             <TableCell>Protocol Balance</TableCell>
+            <TableCell>Operation</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -25,6 +26,11 @@ export const CollateralList = () => {
             </TableCell>
             <TableCell>1.21</TableCell>
             <TableCell>0.00</TableCell>
+            <TableCell>
+              <Button>
+                Supply
+              </Button>
+            </TableCell>
           </TableRow>
         </TableBody>
       </Table>
