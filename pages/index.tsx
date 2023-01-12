@@ -1,6 +1,6 @@
-import { WalletConnect } from 'src/components/WalletConnect'
+import { Dashboard } from 'src/modules/dashboard'
 export default function Home() {
   return (
-    <WalletConnect />
+    <Dashboard />
   )
 }
