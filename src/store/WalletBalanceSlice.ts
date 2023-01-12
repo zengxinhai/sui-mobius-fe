@@ -1,8 +1,10 @@
 import { StateCreator } from 'zustand'
 import { RootState } from './root'
+import BigNumber from "bignumber.js";
 
 export interface WalletBalanceSlice {
-  balances: Record<string, string>
+  balances: Record<string, BigNumber>,
+  setBalances: (balances: Record<string, BigNumber>) => void,
 }
 
 export const createWalletBalanceSlice: StateCreator<
@@ -12,6 +14,7 @@ export const createWalletBalanceSlice: StateCreator<
   WalletBalanceSlice
   > = (set) => {
   return {
-    balances: {}
+    balances: {},
+    setBalances: (balances) => set({ balances })
   }
 }
