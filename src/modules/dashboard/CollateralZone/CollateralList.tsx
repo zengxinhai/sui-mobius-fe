@@ -17,10 +17,9 @@ export const CollateralList = () => {
           <TableRow>
             <TableCell>
               <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                <CoinIcon symbol='btc' />
+                <CoinIcon symbol='btc' sx={{ marginRight: '8px' }} />
                 <Box>
                   <Typography>BTC</Typography>
-                  <Typography>Bitcoin</Typography>
                 </Box>
               </Box>
             </TableCell>
