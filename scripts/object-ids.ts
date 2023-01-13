@@ -1,0 +1,6 @@
+export const PKG_ID = '0x5844ec761760c54b1bd4788e1be2621b8df8f400'
+export const BANK_ID = '0x45b4f1051f20b46124ae2b7c5cbde87d01dfdc53'
+export const COIN_DECIMALS_REGISTRY_ID = '0xd8788ab34011d1cc705d2b19ace0b984a3aeac2a'
+export const ADMIN_CAP_ID = '0x58ce19290729c429ce5e1f10805766a804f71744'
+
+export const TEST_COIN_PKG_ID = '0x2472d484ca22fc7f3c1b28e8cd87a7d970c22c90'

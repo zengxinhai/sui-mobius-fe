@@ -13,7 +13,7 @@
     "@emotion/styled": "^11.10.5",
     "@fontsource/roboto": "^4.5.8",
     "@mui/material": "^5.11.4",
-    "@mysten/sui.js": "^0.20.0",
+    "@mysten/sui.js": "^0.22.0",
     "@types/node": "18.11.9",
     "@types/react": "18.0.25",
     "@types/react-dom": "18.0.9",
