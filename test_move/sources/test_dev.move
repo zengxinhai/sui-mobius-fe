@@ -1,21 +1,14 @@
 module test_dev::test_dev {
   
-  use std::type_name::{TypeName, get};
-  use sui::object::UID;
-  use sui::table::Table;
-  use sui::tx_context::TxContext;
-  use sui::object;
-  use sui::table;
-  use sui::transfer;
   use std::vector;
+  use std::type_name::{TypeName, get};
+  use sui::object::{Self, UID};
+  use sui::table::{Self, Table};
+  use sui::tx_context::TxContext;
+  use sui::transfer;
   
   struct A has drop {}
   struct B has drop {}
-  
-  struct QueryResult has copy, drop {
-    typeName: TypeName,
-    balanceSheet: BalanceSheet,
-  }
   
   struct BalanceSheet has copy, store, drop {
     cash: u64,
@@ -25,6 +18,11 @@ module test_dev::test_dev {
   struct BalanceSheets has key {
     id: UID,
     table: Table<TypeName, BalanceSheet>
+  }
+  
+  struct QueryResult has copy, drop {
+    typeName: TypeName,
+    balanceSheet: BalanceSheet,
   }
   
   fun init(ctx: &mut TxContext) {

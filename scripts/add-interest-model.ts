@@ -60,7 +60,9 @@ const applyInterestModelChange = async(coinType: string, changeId: string) => {
 }
 
 (async() => {
-  const changeId = '0x5a2b22b7bac09c05432d9712b4f1198b563c1e1e';
+  const changeId = '0x395451739b34da98819284430175f5f88db3ac8e';
   const res = await applyInterestModelChange(TestUsdcType, changeId);
   console.log(res)
+  // const res = await createInterestModelChange(TestUsdcType, interestModel);
+  // console.log(res)
 })()

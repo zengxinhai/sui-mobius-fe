@@ -1,6 +1,8 @@
-export const PKG_ID = '0x5844ec761760c54b1bd4788e1be2621b8df8f400'
-export const BANK_ID = '0x45b4f1051f20b46124ae2b7c5cbde87d01dfdc53'
-export const COIN_DECIMALS_REGISTRY_ID = '0xd8788ab34011d1cc705d2b19ace0b984a3aeac2a'
-export const ADMIN_CAP_ID = '0x58ce19290729c429ce5e1f10805766a804f71744'
+export const PKG_ID = '0xf2ba6d7783511cc747e018dd5b1389ce67acd4cd'
+export const BANK_ID = '0x8b3a4268d9a206e5c64a47281913a47a5002f4a3'
+export const COIN_DECIMALS_REGISTRY_ID = '0xd35c3bcd8a996b4093cb9fa3197ddb18ffdd1b43'
+export const ADMIN_CAP_ID = '0x73509d0dd86b112eb41dfe17406da72ccf73a3f5'
+
+export const PROTOCOL_QUERY_PKG_ID = '0xc09bb5599908a6f3250636619ef44e19ca02f45c'
 
 export const TEST_COIN_PKG_ID = '0x2472d484ca22fc7f3c1b28e8cd87a7d970c22c90'
