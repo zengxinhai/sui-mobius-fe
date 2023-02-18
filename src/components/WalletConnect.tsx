@@ -1,8 +1,8 @@
 import React from 'react';
-import { SignInButton } from 'ethos-connect';
+import { ConnectButton } from '@suiet/wallet-kit';
 
 export const WalletConnect: React.FC = () => {
   return (
-    <SignInButton>Connect Wallet</SignInButton>
+    <ConnectButton>Connect Wallet</ConnectButton>
   )
 }

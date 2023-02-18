@@ -5,7 +5,7 @@ import { AppHeader } from './AppHeader';
 
 export function MainLayout({ children }: { children: ReactNode }) {
   return (
-    <Box style={{ background: '#f1f1f1' }}>
+    <Box style={{ background: '#f1f1f1', height: '100%' }}>
       <AppHeader />
       <Box component="main" sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
         {children}

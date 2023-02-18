@@ -1,33 +1,18 @@
-import React, {useMemo} from "react";
-import {Box, Container, Typography} from '@mui/material'
-import { CollateralZone } from './CollateralZone'
-import { PoolZone } from './PoolZone'
-import {useRootStore} from "../../store/root";
+import React from "react";
+import {Box, Container, TextField} from '@mui/material'
+import {StakeCard} from "../../components/StakeCard";
 
 export const Dashboard: React.FC = () => {
-  const walletBalances = useRootStore(state => state.balances);
-  const balanceList = useMemo(() => {
-    let list: { type: string, amount: string }[] = [];
-    for(const coinType in walletBalances) {
-      const item = { type: coinType, amount: walletBalances[coinType].toString() };
-      list.push(item);
-    }
-    return list;
-  }, [walletBalances])
   return (
     <Container>
-      <Box sx={{ display: 'flex', flexDirection: 'row', marginTop: '20px' }}>
-        <CollateralZone />
-        <Box style={{ width: '30px' }} />
-        <PoolZone />
+      <Box style={{ margin: '20px' }}>
+        <TextField label="Search by coin name" variant='standard' style={{ width: '100%' }} />
       </Box>
-      {balanceList.map(balance => (
-        <div key={balance.type}>
-          <Typography>{balance.type}</Typography>
-          <Typography>{balance.amount}</Typography>
-        </div>
-      ))
-      }
+      <Box style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', columnGap: '30px' }}>
+        <StakeCard />
+        <StakeCard />
+        <StakeCard />
+      </Box>
     </Container>
   )
 }

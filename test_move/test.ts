@@ -20,17 +20,21 @@ function des(data: Uint8Array) {
   return bcs.de('vector<QueryResult>', data)
 }
 
-const balanceSheetsId = '0x92a403ee9467f3753a28a8725a053eda6f64cca4';
-const testPkgId = '0xd7d27a9a68c11b9035be08428feceea9bf374510';
+const balanceSheetsId = '0x075d90ab6c76c4cd58193245080d23fe0ae7b850';
+const testPkgId = '0x77818a8a85ee3abd4fb91807f3727bf5a4b8b1d1';
 
 (async () => {
   const sender = '7738ccc64bd64bb7b3524296db285042f7876281';
-  const res = await provider.devInspectMoveCall(sender, {
+  const moveCall = {
     packageObjectId: testPkgId,
     module: 'test_dev',
     function: 'query',
     typeArguments: [],
     arguments: [balanceSheetsId]
+  };
+  const res = await provider.devInspectTransaction(sender, {
+    kind: 'moveCall',
+    data: moveCall
   })
   if ('Ok' in res.results) {
     const returnValues = res.results.Ok[0][1].returnValues;

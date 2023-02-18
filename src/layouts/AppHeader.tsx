@@ -4,10 +4,12 @@ import { WalletConnect } from 'src/components/WalletConnect'
 
 export const AppHeader: React.FC = () => {
   return (
-    <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+    <Box
+      sx={{display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '20px 16px'}}
+    >
       <Box style={{ flexGrow: 1 }}>
         <Typography fontSize={26}>
-          Mobius
+          SUI Stake Protocol
         </Typography>
       </Box>
       <WalletConnect />

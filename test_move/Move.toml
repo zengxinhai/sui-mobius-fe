@@ -4,7 +4,6 @@ version="0.0.1"
 
 [dependencies]
 Sui = { local = "../../sui/crates/sui-framework" }
-Protocol = {  }
 
 [addresses]
 test_dev="0x0"
