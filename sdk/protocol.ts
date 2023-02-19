@@ -36,7 +36,7 @@ export class Protocol {
       module: 'stake_sea',
       function: 'create_pool',
       typeArguments: [this.witType, this.rewardType, stakeCoinType],
-      arguments: [this.adminCapId, this.protocolId, rewardsPerSec.toString(), now.toString()],
+      arguments: [this.adminCapId, this.protocolId, rewardsPerSec.toFixed(0), now.toString()],
       gasBudget: 1000000,
     })
   }
@@ -56,17 +56,35 @@ export class Protocol {
     if (!stakeCoinType.startsWith('0x')) stakeCoinType = `0x${stakeCoinType}`;
     const now = Math.floor(Date.now() / 1000);
     const coinIds = await this.selectCoins(stakeCoinType, amount);
-    return this.signer.executeMoveCall({
-      packageObjectId: this.pkgId,
-      module: 'stake_sea',
-      function: 'stake_',
-      typeArguments: [this.witType, this.rewardType, stakeCoinType],
-      arguments: [this.protocolId, coinIds, amount.toString(), now.toString()],
-      gasBudget: 1000000,
-    })
+    
+    const checkData = await this.getUserStakeData(stakeCoinType);
+    if (!checkData) {
+      return this.signer.executeMoveCall({
+        packageObjectId: this.pkgId,
+        module: 'stake_sea',
+        function: 'stake_',
+        typeArguments: [this.witType, this.rewardType, stakeCoinType],
+        arguments: [this.protocolId, coinIds, amount.toString(), now.toString()],
+        gasBudget: 1000000,
+      })
+    } else {
+      const checkId = checkData.objectId;
+      return this.signer.executeMoveCall({
+        packageObjectId: this.pkgId,
+        module: 'stake_sea',
+        function: 'stake_more',
+        typeArguments: [this.witType, this.rewardType, stakeCoinType],
+        arguments: [this.protocolId, coinIds, amount.toString(), checkId, now.toString()],
+        gasBudget: 1000000,
+      })
+    }
   }
   
-  async unstake(stakeCoinType: string, checkId: string, amount: number) {
+  async unstake(stakeCoinType: string, amount: number) {
+    if (!stakeCoinType.startsWith('0x')) stakeCoinType = `0x${stakeCoinType}`;
+    const checkData = await this.getUserStakeData(stakeCoinType);
+    if (!checkData) return null;
+    const checkId = checkData.objectId;
     const now = Math.floor(Date.now() / 1000);
     return this.signer.executeMoveCall({
       packageObjectId: this.pkgId,

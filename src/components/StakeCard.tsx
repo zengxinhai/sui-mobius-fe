@@ -4,6 +4,7 @@ import {StakeModal} from "./StakeModal";
 import {useEffect, useState} from "react";
 import {getDisplayAmount, getSymbol} from "../constants/coin";
 import {stakeProtocol} from "../protocol";
+import {UnStakeModal} from "./UnStakeModal";
 
 type Props = {
   stakeCoinType: string,
@@ -12,9 +13,11 @@ type Props = {
   availableRewards: bigint,
   rewardsPerSec: bigint,
   stakeFn: (stakeCoinType: string, stakeAmount: number) => Promise<void>
+  unStakeFn: (stakeCoinType: string, unStakeAmount: number) => Promise<void>
 }
 export const StakeCard = (props: Props) => {
-  let [modalOpen, setModalOpen] = useState(false);
+  let [stakeModalOpen, setStakeModalOpen] = useState(false);
+  let [unStakeModalOpen, setUnstakeModalOpen] = useState(false);
   let [userStaked, setUserStaked] = useState<string | null>(null);
   
   let stakeCoinSymbol = getSymbol(props.stakeCoinType);
@@ -22,8 +25,10 @@ export const StakeCard = (props: Props) => {
   let userStakedDisplayAmount = userStaked? getDisplayAmount(props.stakeCoinType, BigInt(userStaked)) : null;
   let stakeCoinDisplayAmount = getDisplayAmount(props.stakeCoinType, props.totalStaked);
   let totalRewardsDisplayAmount = getDisplayAmount(props.rewardCoinType, props.availableRewards);
-  let secsInADay = BigInt(365 * 24 * 3600);
+  let secsInADay = BigInt(24 * 3600);
   let rewardsPerDay = getDisplayAmount(props.rewardCoinType, props.rewardsPerSec * secsInADay);
+  
+  let hasStake = userStaked && Number(userStaked) > 0
   
   useEffect(() => {
     stakeProtocol.getUserStakeData(props.stakeCoinType).then(res => {
@@ -41,9 +46,21 @@ export const StakeCard = (props: Props) => {
           </Typography>
         </Box>
         <Box style={{ padding: '18px' }}>
-          <Box style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginBottom: '8px' }}>
-            <Typography fontWeight='bold'>You Staked:</Typography>
-            <Typography fontWeight='bold'>{userStakedDisplayAmount} {stakeCoinSymbol}</Typography>
+          <Box
+            style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginBottom: '8px'}}
+          >
+            <Typography
+              fontWeight={ hasStake ? 'bold' : 'normal' }
+              style={{ color: hasStake ? '#0b0b0b' : '#cacaca' }}
+            >
+              You Staked:
+            </Typography>
+            <Typography
+              fontWeight={ hasStake ? 'bold' : 'normal' }
+              style={{ color: hasStake ? '#0b0b0b' : '#cacaca' }}
+            >
+              {userStakedDisplayAmount} {stakeCoinSymbol}
+            </Typography>
           </Box>
           <Box style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginBottom: '8px' }}>
             <Typography>Total Staked:</Typography>
@@ -59,16 +76,26 @@ export const StakeCard = (props: Props) => {
           </Box>
         </Box>
         <Box sx={{ display: 'flex', flexDirection: 'row', padding: '8px' }}>
-          <Button variant='contained' fullWidth onClick={() => setModalOpen(true)}>
+          <Button variant='contained' fullWidth onClick={() => setStakeModalOpen(true)}>
             Stake
+          </Button>
+          <Box style={{ width: '20px' }} />
+          <Button variant='outlined' fullWidth disabled={!userStaked || Number(userStaked) <= 0} onClick={() => setUnstakeModalOpen(true)}>
+            Unstake
           </Button>
         </Box>
       </CardContent>
       <StakeModal
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
+        open={stakeModalOpen}
+        onClose={() => setStakeModalOpen(false)}
         stakeCoinType={props.stakeCoinType}
         stakeFn={props.stakeFn}
+      />
+      <UnStakeModal
+        open={unStakeModalOpen}
+        onClose={() => setUnstakeModalOpen(false)}
+        stakeCoinType={props.stakeCoinType}
+        unStakeFn={props.unStakeFn}
       />
     </Card>
   )

@@ -1,4 +1,5 @@
 import { Protocol } from '../../sdk/protocol'
+import {  pkgId, protocolId, adminCapId } from '../constants/objects'
 
 const seedBase64 = 'AFQrSV3G+OF3QSbHLr+q2fQuEh7x4YrrbyDF8zNzIQK/';
 export const seed = _getSeedFromBase64String(seedBase64);
@@ -10,11 +11,8 @@ function _getSeedFromBase64String(b64: string) {
   return Uint8Array.prototype.slice.call(Buffer.from(b64, "base64"), 1);
 }
 
-const pkgId = '0x44a9ff1c1fc532c7d5f0780edada4fb4b221a1aa';
-const protocolId = '0x5dabd31d5bcfdcdf19441c18e5d0967adb04b246';
-const adminCapId = '0x21adcf7196ca982930f7d85c99dcf93e9f85e574';
-const rewardType = '0x2::sui::SUI';
-const witType = '0x44a9ff1c1fc532c7d5f0780edada4fb4b221a1aa::test_stake::TEST_STAKE';
+const rewardType = `${pkgId}::usdc::USDC`;
+const witType = `${pkgId}::test_stake::TEST_STAKE`;
 
 export type { StakeData } from '../../sdk/query'
 

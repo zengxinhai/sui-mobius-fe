@@ -16,7 +16,7 @@ export const UserBalances = (props: Props) => {
         Portfolio:
       </Typography>
       <Box style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', columnGap: '30px' }}>
-        {props.balances.map(balance =>
+        {props.balances.filter(balance => getSymbol(balance.type)).map(balance =>
           <Box key={balance.type} style={{ display: 'flex', flexDirection: 'row' }}>
             <Box style={{ display: 'flex', flexDirection: 'row', marginRight: '10px' }}>
               <CoinIcon symbol={getSymbol(balance.type)} sx={{ marginRight: '20px' }} />

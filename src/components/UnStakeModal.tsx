@@ -5,7 +5,7 @@ type Props = {
   open: boolean,
   onClose: () => void,
   stakeCoinType: string,
-  stakeFn: (stakeCoinType: string, stakeAmount: number) => Promise<void>
+  unStakeFn: (stakeCoinType: string, unStakeAmount: number) => Promise<void>
 }
 const style: React.CSSProperties = {
   position: 'absolute' as 'absolute',
@@ -14,11 +14,12 @@ const style: React.CSSProperties = {
   transform: 'translate(-50%, -50%)',
   width: 400,
   background: '#f2f2f2',
-  borderRadius: '8px',
+  boxShadow: '24',
   padding: '24px 12px',
+  borderRadius: '8px'
 };
-export const StakeModal = (props: Props) => {
-  const [stakeAmount, setStakeAmount] = useState<string>('0');
+export const UnStakeModal = (props: Props) => {
+  const [unStakeAmount, setUnStakeAmount] = useState<string>('0');
   return (
     <Modal
       open={props.open}
@@ -28,21 +29,21 @@ export const StakeModal = (props: Props) => {
     >
       <Box style={style}>
         <Typography style={{ fontSize: '20px', marginBottom: '20px', color: '#a3a3a3' }}>
-          Stake
+          Unstake
         </Typography>
         <Box style={{ display: 'flex', alignItems: 'center' }}>
           <TextField
-            value={stakeAmount}
-            onChange={event => setStakeAmount(event.target.value)}
-            label="Stake amount"
+            value={unStakeAmount}
+            onChange={event => setUnStakeAmount(event.target.value)}
+            label="Unstake amount"
             variant='standard'
             style={{ width: '80%' }}
           />
           <Button
-            disabled={!stakeAmount || Number(stakeAmount) <= 0}
-            onClick={() => props.stakeFn(props.stakeCoinType, Number(stakeAmount))}
+            disabled={!unStakeAmount || Number(unStakeAmount) <= 0}
+            onClick={() => props.unStakeFn(props.stakeCoinType, Number(unStakeAmount))}
           >
-            Stake
+            Unstake
           </Button>
         </Box>
       </Box>
