@@ -16,6 +16,7 @@ export class Protocol {
   private readonly rewardType: string;
   private readonly witType: string;
   private readonly signer: RawSigner;
+  private readonly provider: JsonRpcProvider;
   constructor(params: ConstructorParams) {
     const { seed, pkgId, protocolId, adminCapId, rewardType, witType } = params;
     this.pkgId = pkgId;
@@ -24,8 +25,8 @@ export class Protocol {
     this.rewardType = rewardType;
     this.witType = witType;
     const keypair = Ed25519Keypair.fromSeed(seed);
-    const provider = new JsonRpcProvider();
-    this.signer = new RawSigner(keypair, provider);
+    this.provider = new JsonRpcProvider();
+    this.signer = new RawSigner(keypair, this.provider);
   }
   
   async createPool(stakeCoinType: string, rewardsPerSec: number) {
@@ -51,14 +52,15 @@ export class Protocol {
     })
   }
   
-  async stake(stakeCoinType: string, coinId: string) {
+  async stake(stakeCoinType: string, amount: number) {
     const now = Math.floor(Date.now() / 1000);
+    const coinIds = await this.selectCoins(stakeCoinType, amount);
     return this.signer.executeMoveCall({
       packageObjectId: this.pkgId,
       module: 'stake_sea',
       function: 'stake_',
       typeArguments: [this.witType, this.rewardType, stakeCoinType],
-      arguments: [this.protocolId, coinId, now.toString()],
+      arguments: [this.protocolId, coinIds, now.toString()],
       gasBudget: 1000000,
     })
   }
@@ -77,5 +79,23 @@ export class Protocol {
   
   async getStakeData() {
     return queryStakeData(this.pkgId, this.protocolId, this.rewardType, this.witType)
+  }
+  
+  async selectCoins(type: string, amount: number): Promise<string[]> {
+    const addr = await this.signer.getAddress();
+    const res = await this.provider.selectCoinSetWithCombinedBalanceGreaterThanOrEqual(
+      addr,
+      BigInt(amount),
+      type
+    );
+    // @ts-ignore
+    const objectIds = res.map(item => item.details?.reference?.objectId)
+    return objectIds
+  }
+  
+  async getBalances() {
+    const provider = new JsonRpcProvider();
+    const addr = await this.signer.getAddress();
+    return provider.getAllBalances(addr);
   }
 }

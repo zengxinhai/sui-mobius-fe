@@ -10,6 +10,7 @@ type Props = {
   totalStaked: bigint,
   availableRewards: bigint,
   rewardsPerSec: bigint,
+  stakeFn: (stakeCoinType: string) => Promise<void>
 }
 export const StakeCard = (props: Props) => {
   let [modalOpen, setModalOpen] = useState(false);
@@ -48,7 +49,12 @@ export const StakeCard = (props: Props) => {
           </Button>
         </Box>
       </CardContent>
-      <StakeModal open={modalOpen} onClose={() => setModalOpen(false)} />
+      <StakeModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        stakeCoinType={props.stakeCoinType}
+        stakeFn={props.stakeFn}
+      />
     </Card>
   )
 }

@@ -1,9 +1,11 @@
 import React from 'react';
-import {Box, Modal, Typography} from "@mui/material";
+import {Box, Button, Modal, Typography} from "@mui/material";
 
 type Props = {
   open: boolean,
-  onClose: () => void
+  onClose: () => void,
+  stakeCoinType: string,
+  stakeFn: (stakeCoinType: string) => Promise<void>
 }
 const style: React.CSSProperties = {
   position: 'absolute' as 'absolute',
@@ -27,9 +29,9 @@ export const StakeModal = (props: Props) => {
         <Typography variant="h6" component="h2">
           Stake
         </Typography>
-        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-          Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-        </Typography>
+        <Button onClick={() => props.stakeFn(props.stakeCoinType)}>
+          Stake
+        </Button>
       </Box>
     </Modal>
   )

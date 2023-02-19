@@ -21,6 +21,5 @@ export const getSymbol = (typeName: string) => {
 export const getDisplayAmount = (typeName: string, amount: bigint) => {
   const decimal = decimals[typeName];
   const displayAmount = Number(amount) / Math.pow(10, decimal);
-  console.log(typeName, amount, decimal, displayAmount)
   return displayAmount.toFixed(2);
 }

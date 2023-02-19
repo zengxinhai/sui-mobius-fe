@@ -4,7 +4,7 @@ import {StakeCard} from "../../components/StakeCard";
 import {useData} from "./hooks";
 
 export const Dashboard: React.FC = () => {
-  const { addPool, stakeData } = useData();
+  const { addPool, stakeData, stake } = useData();
   const [stakeCoinType, setStakeCoinType] = useState('');
   const [rewardsPerSec, setRewardsPerSec] = useState('');
   return (
@@ -38,6 +38,7 @@ export const Dashboard: React.FC = () => {
               totalStaked={pool.data.totalStaked}
               availableRewards={stakeData.rewardAmount}
               rewardsPerSec={pool.data.rewardRatePerSec}
+              stakeFn={stake}
             />
           ))
         }

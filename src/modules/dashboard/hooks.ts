@@ -9,15 +9,19 @@ export const useData = () => {
     setStakeData(res);
   }, [setStakeData])
   
+  const stake = useCallback(async (coinType: string) => {
+    await stakeProtocol.stake(coinType, 100)
+  }, [setStakeData])
+  
   useEffect(() => {
     stakeProtocol.getStakeData().then(res => {
-      console.log('stakeData', res)
       setStakeData(res)
     })
   }, [setStakeData])
   
   return {
     stakeData,
-    addPool
+    addPool,
+    stake,
   }
 }

@@ -14,6 +14,7 @@ module stake::stake_sea {
   use stake::reward::{Self, StakeRewardTreasury};
   use stake::action;
   use stake::check::StakeCheck;
+  use sui::pay;
   
   const IndexStaked: u64 = 1000000000;
   
@@ -84,21 +85,30 @@ module stake::stake_sea {
   
   public entry fun stake_<Wit, Reward, StakeCoin>(
     self: &mut StakeSea<Wit, Reward>,
-    coin: Coin<StakeCoin>,
+    coins: vector<Coin<StakeCoin>>,
+    amount: u64,
     now: u64,
     ctx: &mut TxContext
   ) {
-    let stakeCheck = stake(self, coin, now, ctx);
+    let (targetCoin, leftCoin) = split_coin_vec(coins, amount, ctx);
+    transfer::transfer(leftCoin, tx_context::sender(ctx));
+    
+    let stakeCheck = stake(self, targetCoin, now, ctx);
     transfer::transfer(stakeCheck, tx_context::sender(ctx));
   }
   
   public entry fun stake_more<Wit, Reward, StakeCoin>(
     self: &mut StakeSea<Wit, Reward>,
-    coin: Coin<StakeCoin>,
+    coins: vector<Coin<StakeCoin>>,
+    amount: u64,
     stakeCheck: &mut StakeCheck<Wit, Reward, StakeCoin>,
     now: u64,
+    ctx: &mut TxContext
   ) {
-    action::stake_more(coin, stakeCheck, &mut self.pools, &mut self.stakeBalances, now);
+    let (targetCoin, leftCoin) = split_coin_vec(coins, amount, ctx);
+    transfer::transfer(leftCoin, tx_context::sender(ctx));
+    
+    action::stake_more(targetCoin, stakeCheck, &mut self.pools, &mut self.stakeBalances, now);
   }
   
   public fun unstake<Wit, Reward, StakeCoin>(
@@ -122,5 +132,15 @@ module stake::stake_sea {
     let sender = tx_context::sender(ctx);
     transfer::transfer(coin::from_balance(stakeCoinBanlance, ctx), sender);
     transfer::transfer(coin::from_balance(rewardBalance, ctx), sender);
+  }
+  
+  // Split a vector of coins into 2 coins, first coin with amount, the second with whatever left
+  public fun split_coin_vec<T>(
+    coins: vector<Coin<T>>, amount: u64, ctx: &mut TxContext
+  ): (Coin<T>, Coin<T>) {
+    let wholeCoin = coin::zero<T>(ctx);
+    pay::join_vec(&mut wholeCoin, coins);
+    let splittedCoin = coin::split(&mut wholeCoin, amount, ctx);
+    (splittedCoin, wholeCoin)
   }
 }
