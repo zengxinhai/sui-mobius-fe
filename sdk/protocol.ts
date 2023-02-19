@@ -1,4 +1,5 @@
 import { Ed25519Keypair, JsonRpcProvider, RawSigner } from "@mysten/sui.js";
+import {queryStakeData} from "./query";
 
 type ConstructorParams = {
   seed: Uint8Array,
@@ -72,5 +73,9 @@ export class Protocol {
       arguments: [this.protocolId, checkId, amount.toString(), now.toString()],
       gasBudget: 1000000,
     })
+  }
+  
+  async getStakeData() {
+    return queryStakeData(this.pkgId, this.protocolId, this.rewardType, this.witType)
   }
 }

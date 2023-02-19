@@ -1,7 +1,4 @@
-import dotenv from "dotenv";
 import { Ed25519Keypair, JsonRpcProvider, RawSigner } from "@mysten/sui.js";
-dotenv.config();
-
 
 const seed = 'AFQrSV3G+OF3QSbHLr+q2fQuEh7x4YrrbyDF8zNzIQK/';
 export const seedArr = _getSeedFromBase64String(seed);
