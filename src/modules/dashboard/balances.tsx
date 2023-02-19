@@ -10,7 +10,6 @@ type Props = {
   balances: Balances
 }
 export const UserBalances = (props: Props) => {
-  console.log(props.balances)
   return (
     <Box>
       <Typography fontWeight='bold' style={{ fontSize: '24px', marginBottom: '20px', color: '#a3a3a3' }}>

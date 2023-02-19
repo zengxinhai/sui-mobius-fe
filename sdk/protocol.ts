@@ -1,4 +1,4 @@
-import { Ed25519Keypair, JsonRpcProvider, RawSigner } from "@mysten/sui.js";
+import {Ed25519Keypair, getObjectFields, JsonRpcProvider, RawSigner } from "@mysten/sui.js";
 import {queryStakeData} from "./query";
 
 type ConstructorParams = {
@@ -56,8 +56,6 @@ export class Protocol {
     if (!stakeCoinType.startsWith('0x')) stakeCoinType = `0x${stakeCoinType}`;
     const now = Math.floor(Date.now() / 1000);
     const coinIds = await this.selectCoins(stakeCoinType, amount);
-    console.log('stakeAmount', amount)
-    console.log('objectIds', coinIds)
     return this.signer.executeMoveCall({
       packageObjectId: this.pkgId,
       module: 'stake_sea',
@@ -82,6 +80,20 @@ export class Protocol {
   
   async getStakeData() {
     return queryStakeData(this.pkgId, this.protocolId, this.rewardType, this.witType)
+  }
+  
+  async getUserStakeData(stakeCoinType: string) {
+    if (!stakeCoinType.startsWith('0x')) stakeCoinType = `0x${stakeCoinType}`;
+    const addr = await this.signer.getAddress();
+    const objects = await this.provider.getObjectsOwnedByAddress(addr);
+    const checkType = `${this.pkgId}::check::StakeCheck<${this.witType}, ${this.rewardType}, ${stakeCoinType}>`
+    const checks = objects.filter(obj => obj.type === checkType)
+    if (checks.length === 0) return null
+    const checkId = checks[0].objectId;
+    const checkObj = await this.provider.getObject(checkId);
+    const checkObjFields = getObjectFields(checkObj);
+    // @ts-ignore
+    return { staked: checkObjFields.staked, objectId: checkId }
   }
   
   async selectCoins(type: string, amount: number): Promise<string[]> {

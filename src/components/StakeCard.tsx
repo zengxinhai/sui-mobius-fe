@@ -1,8 +1,9 @@
 import {Box, Button, Card, CardContent, Typography} from "@mui/material";
 import {CoinIcon} from "./CoinIcon";
 import {StakeModal} from "./StakeModal";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {getDisplayAmount, getSymbol} from "../constants/coin";
+import {stakeProtocol} from "../protocol";
 
 type Props = {
   stakeCoinType: string,
@@ -14,12 +15,22 @@ type Props = {
 }
 export const StakeCard = (props: Props) => {
   let [modalOpen, setModalOpen] = useState(false);
+  let [userStaked, setUserStaked] = useState<string | null>(null);
+  
   let stakeCoinSymbol = getSymbol(props.stakeCoinType);
   let rewardCoinSymbol = getSymbol(props.rewardCoinType);
+  let userStakedDisplayAmount = userStaked? getDisplayAmount(props.stakeCoinType, BigInt(userStaked)) : null;
   let stakeCoinDisplayAmount = getDisplayAmount(props.stakeCoinType, props.totalStaked);
   let totalRewardsDisplayAmount = getDisplayAmount(props.rewardCoinType, props.availableRewards);
   let secsInADay = BigInt(365 * 24 * 3600);
   let rewardsPerDay = getDisplayAmount(props.rewardCoinType, props.rewardsPerSec * secsInADay);
+  
+  useEffect(() => {
+    stakeProtocol.getUserStakeData(props.stakeCoinType).then(res => {
+      setUserStaked(res?.staked)
+    })
+  }, [props.stakeCoinType])
+  
   return (
     <Card style={{ minWidth: '320px' }}>
       <CardContent style={{ padding: '0' }}>
@@ -30,6 +41,10 @@ export const StakeCard = (props: Props) => {
           </Typography>
         </Box>
         <Box style={{ padding: '18px' }}>
+          <Box style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginBottom: '8px' }}>
+            <Typography fontWeight='bold'>You Staked:</Typography>
+            <Typography fontWeight='bold'>{userStakedDisplayAmount} {stakeCoinSymbol}</Typography>
+          </Box>
           <Box style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginBottom: '8px' }}>
             <Typography>Total Staked:</Typography>
             <Typography>{stakeCoinDisplayAmount} {stakeCoinSymbol}</Typography>
