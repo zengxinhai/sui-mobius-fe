@@ -99,6 +99,9 @@ export class Protocol {
   async getBalances() {
     const provider = new JsonRpcProvider();
     const addr = await this.signer.getAddress();
-    return provider.getAllBalances(addr);
+    const balances = await provider.getAllBalances(addr);
+    return balances
+      .map(item => ({ type: item.coinType, balance: item.totalBalance }))
+      .sort((a,b) => a.type > b.type ? 1 : -1)
   }
 }

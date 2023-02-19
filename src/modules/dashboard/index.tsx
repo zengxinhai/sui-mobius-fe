@@ -1,15 +1,22 @@
 import React, {useState} from "react";
-import {Box, Container, TextField, Button} from '@mui/material'
+import {Box, Container, TextField, Typography, Button} from '@mui/material'
 import {StakeCard} from "../../components/StakeCard";
 import {useData} from "./hooks";
+import {UserBalances} from "./balances";
 
 export const Dashboard: React.FC = () => {
-  const { addPool, stakeData, stake } = useData();
+  const { addPool, stakeData, balances, stake } = useData();
   const [stakeCoinType, setStakeCoinType] = useState('');
   const [rewardsPerSec, setRewardsPerSec] = useState('');
   return (
     <Container>
-      <Box style={{ margin: '20px', display: 'flex', flexDirection: 'row' }}>
+      <UserBalances balances={balances} />
+      
+      <Box style={{ height: '32px' }} />
+      <Typography fontWeight='bold' style={{ fontSize: '24px', color: '#a3a3a3' }}>
+        Stake:
+      </Typography>
+      <Box style={{ marginBottom: '20px', display: 'flex', flexDirection: 'row' }}>
         <TextField
           value={stakeCoinType}
           onChange={event => setStakeCoinType(event.target.value)}
