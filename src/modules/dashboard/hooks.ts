@@ -15,8 +15,8 @@ export const useData = () => {
     setStakeData(res);
   }, [setStakeData])
   
-  const stake = useCallback(async (coinType: string) => {
-    await stakeProtocol.stake(coinType, Math.pow(10, 9))
+  const stake = useCallback(async (coinType: string, stakeAmount: number) => {
+    await stakeProtocol.stake(coinType, stakeAmount * Math.pow(10, 9))
     const res = await stakeProtocol.getStakeData();
     setStakeData(res);
     stakeProtocol.getBalances().then(res => setBalances(res))

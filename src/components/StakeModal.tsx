@@ -1,11 +1,11 @@
-import React from 'react';
-import {Box, Button, Modal, Typography} from "@mui/material";
+import React, {useState} from 'react';
+import {Box, Button, Modal, TextField, Typography} from "@mui/material";
 
 type Props = {
   open: boolean,
   onClose: () => void,
   stakeCoinType: string,
-  stakeFn: (stakeCoinType: string) => Promise<void>
+  stakeFn: (stakeCoinType: string, stakeAmount: number) => Promise<void>
 }
 const style: React.CSSProperties = {
   position: 'absolute' as 'absolute',
@@ -18,6 +18,7 @@ const style: React.CSSProperties = {
   padding: '8px',
 };
 export const StakeModal = (props: Props) => {
+  const [stakeAmount, setStakeAmount] = useState<string>('0');
   return (
     <Modal
       open={props.open}
@@ -29,7 +30,17 @@ export const StakeModal = (props: Props) => {
         <Typography variant="h6" component="h2">
           Stake
         </Typography>
-        <Button onClick={() => props.stakeFn(props.stakeCoinType)}>
+        <TextField
+          value={stakeAmount}
+          onChange={event => setStakeAmount(event.target.value)}
+          label="Stake amount"
+          variant='standard'
+          style={{ width: '80%' }}
+        />
+        <Button
+          disabled={!stakeAmount || Number(stakeAmount) <= 0}
+          onClick={() => props.stakeFn(props.stakeCoinType, Number(stakeAmount))}
+        >
           Stake
         </Button>
       </Box>
