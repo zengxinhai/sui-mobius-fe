@@ -53,14 +53,17 @@ export class Protocol {
   }
   
   async stake(stakeCoinType: string, amount: number) {
+    if (!stakeCoinType.startsWith('0x')) stakeCoinType = `0x${stakeCoinType}`;
     const now = Math.floor(Date.now() / 1000);
     const coinIds = await this.selectCoins(stakeCoinType, amount);
+    console.log('stakeAmount', amount)
+    console.log('objectIds', coinIds)
     return this.signer.executeMoveCall({
       packageObjectId: this.pkgId,
       module: 'stake_sea',
       function: 'stake_',
       typeArguments: [this.witType, this.rewardType, stakeCoinType],
-      arguments: [this.protocolId, coinIds, now.toString()],
+      arguments: [this.protocolId, coinIds, amount.toString(), now.toString()],
       gasBudget: 1000000,
     })
   }

@@ -10,11 +10,11 @@ function _getSeedFromBase64String(b64: string) {
   return Uint8Array.prototype.slice.call(Buffer.from(b64, "base64"), 1);
 }
 
-const pkgId = '0x458be939aebedb8f8f7b128dd33a83eabda19c94';
-const protocolId = '0xfe3d42e75732b4a35745f21d3640ffd7daea9eab';
-const adminCapId = '0x5e6a261102ffb6a69b177d68fa38234fca911475';
+const pkgId = '0x44a9ff1c1fc532c7d5f0780edada4fb4b221a1aa';
+const protocolId = '0x5dabd31d5bcfdcdf19441c18e5d0967adb04b246';
+const adminCapId = '0x21adcf7196ca982930f7d85c99dcf93e9f85e574';
 const rewardType = '0x2::sui::SUI';
-const witType = '0x458be939aebedb8f8f7b128dd33a83eabda19c94::test_stake::TEST_STAKE';
+const witType = '0x44a9ff1c1fc532c7d5f0780edada4fb4b221a1aa::test_stake::TEST_STAKE';
 
 export type { StakeData } from '../../sdk/query'
 

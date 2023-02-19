@@ -10,7 +10,10 @@ export const useData = () => {
   }, [setStakeData])
   
   const stake = useCallback(async (coinType: string) => {
-    await stakeProtocol.stake(coinType, 100)
+    await stakeProtocol.stake(coinType, Math.pow(10, 9))
+    const res = await stakeProtocol.getStakeData();
+    console.log(res)
+    setStakeData(res);
   }, [setStakeData])
   
   useEffect(() => {
