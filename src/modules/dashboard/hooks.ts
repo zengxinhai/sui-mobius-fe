@@ -25,7 +25,6 @@ export const useData = () => {
     setStakeData(res);
     stakeProtocol.getBalances().then(res => setBalances(res))
     setIsLoading(false);
-    window.location.href = '/'
   }, [setStakeData, setBalances])
   
   const unStake = useCallback(async (coinType: string, amount: number) => {
@@ -35,16 +34,19 @@ export const useData = () => {
     setStakeData(res);
     stakeProtocol.getBalances().then(res => setBalances(res))
     setIsLoading(false);
-    window.location.href = '/'
   }, [setStakeData, setBalances])
   
   useEffect(() => {
-    stakeProtocol.getStakeData().then(res => {
-      setStakeData(res)
-    });
-    stakeProtocol.getBalances().then(res => setBalances(res))
+    let loadData = async () => {
+      setIsLoading(true);
+      let balances = await stakeProtocol.getBalances();
+      setBalances(balances);
+      let stakeData = await stakeProtocol.getStakeData();
+      setStakeData(stakeData);
+      setIsLoading(false);
+    };
+    loadData()
   }, [setStakeData])
-  
   
   return {
     stakeData,
